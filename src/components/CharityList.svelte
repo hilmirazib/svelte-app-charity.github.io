@@ -30,10 +30,10 @@
     .xs-list-with-content li.center-percen{
         text-align: center;
     }
-    .show{
+    /* .show{
         display: block;
         background-color: rgba(0, 0, 0, 0.3);
-    }
+    } */
 </style>
 <!-- <div>
     <h2>Daftar Charity</h2>
@@ -66,7 +66,7 @@
                 {#if charities !== undefined}
                 {#each charities as charity}
                 <div class="col-lg-4 col-md-6">
-                    {#if isOpen === true}
+                    <!-- {#if isOpen === true}
                     <Modal>
                     <div class="modal fade show " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
                         <div class="modal-dialog" role="document">
@@ -105,7 +105,8 @@
                         </div>
                     </div>
                     </Modal>
-                    {/if}
+                    {/if} --> 
+                    <!-- untuk modal diatas tidak lagi digunakan termasuk penggunaan button -->
                     <div class="xs-popular-item xs-box-shadow">
                         <div class="xs-item-header">
 
@@ -120,10 +121,10 @@
                         <!-- .xs-item-header END -->
                         <div class="xs-item-content">
                             <ul class="xs-simple-tag xs-mb-20">
-                                <li><a href="Header">{charity.category}</a></li>
+                                <li><a href="#">{charity.category}</a></li>
                             </ul>
 
-                            <a href="Header" class="xs-post-title xs-mb-30">{charity.title}</a>
+                            <a href="#" class="xs-post-title xs-mb-30">{charity.title}</a>
 
                             <ul class="xs-list-with-content">
                                 <li>{formatCurrency(charity.pladged)}<span>Pledged</span></li>
@@ -138,15 +139,18 @@
                                     <img src="{charity.profile_photo}" alt="">
                                 </div>
                                 <div class="xs-avatar-title">
-                                    <a href="Header"><span>By</span>{charity.profile_name}</a>
+                                    <a href="#"><span>By</span>{charity.profile_name}</a>
                                 </div>
                             </div>
 
                             <span class="xs-separetor"></span>
 
-                            <button data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-block" on:click="{handleModal}">
+                            <!-- <button data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-block" on:click="{handleModal}">
+                                Donate This Cause
+                            </button> -->
+                            <a href="/donation/{charity.id}" data-toggle="modal" data-target="#exampleModal" class="btn btn-primary btn-block" >
 								Donate This Cause
-							</button>
+							</a>
                         </div>
                         <!-- .xs-item-content END -->
                     </div>
