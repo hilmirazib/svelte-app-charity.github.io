@@ -1,14 +1,46 @@
 <script>
+  import router from "page";
+  // import {onMount} from "svelte";
+	import Loader from "../components/Loader.svelte";
 	import Header from "../components/Header.svelte";
-    import Footer from "../components/Footer.svelte";
+  import Footer from "../components/Footer.svelte";
 	import {charities} from "../data/charities";
 	export let params;
-	let data;
+	let data = getCharity(params.id);
+  let amount = 0,
+    name,
+    email,
+    agree = false,
+    contribute = 0;
 
-	function getCharity(id){
-		return charities.find(charity => charity.id === parseInt(id));
+  // function getCharity(id){
+  //   return charities.find(charity => charity.id === parseInt(id));
+  // }
+  // data = getCharity(params.id);
+	async function getCharity(id){
+		const res = await fetch(`https://charity-api-bwa.herokuapp.com/charities/${id}`);
+    return await res.json();
 	}
-	data = getCharity(params.id);
+  async function handleForm(){
+    try{
+      data.pledged = data.pledged + parseInt(amount);
+    const res = await fetch(`https://charity-api-bwa.herokuapp.com/charities/${params.id}`, {
+      method: "PUT",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    console.log(res);
+    router.redirect("/success");
+    } catch(err){
+      console.log(err);
+    }
+    
+  }
+  // onMount(async function (){
+  //   data = await getCharity(params.id);
+  // })
 </script>
 <style>
   #xs-input-checkbox {
@@ -29,14 +61,16 @@
 <!-- welcome section -->
     <!--breadcumb start here-->
 	<Header />
-	{#if data}
+	{#await data}
+  <Loader/>
+  {:then charity}
     <section class="xs-banner-inner-section parallax-window" style="background-image: url('/assets/images/backgrounds/about_bg.jpg')">
       <div class="xs-black-overlay"></div>
       =
       <div class="container">
         <div class="color-white xs-inner-banner-content">
           <h2>Donate Now</h2>
-          <p>{data.title}</p>
+          <p>{charity.title}</p>
           <ul class="xs-breadcumb">
             <li class="badge badge-pill badge-primary"><a href="/" class="color-white">Home /</a> Donate</li>
           </ul>
@@ -51,12 +85,12 @@
         <div class="container">
           <div class="row">
             <div class="col-lg-6">
-              <div class="xs-donation-form-images"><img src="{data.thumbnail}" class="img-responsive" alt="Family Images" /></div>
+              <div class="xs-donation-form-images"><img src="{charity.thumbnail}" class="img-responsive" alt="Family Images" /></div>
             </div>
             <div class="col-lg-6">
               <div class="xs-donation-form-wraper">
                 <div class="xs-heading xs-mb-30">
-                  <h2 class="xs-title">{data.title}</h2>
+                  <h2 class="xs-title">{charity.title}</h2>
                   <p class="small">
                     To learn more about make donate charity with us visit our "<span class="color-green">Contact us</span>" site. By calling
                     <span class="color-green">+44(0) 800 883 8450</span>.
@@ -65,6 +99,7 @@
                 </div>
                 <!-- .xs-heading end -->
                 <form
+                on:submit|preventDefault={handleForm}
                 action="#"
                 method="post"
                 id="xs-donation-form"
@@ -76,6 +111,7 @@
                     <span class="color-light-red">**</span>
                   </label>
                   <input
+                    bind:value={amount}
                     type="text"
                     name="amount"
                     id="xs-donate-amount"
@@ -94,6 +130,7 @@
                     name="name"
                     id="xs-donate-name"
                     class="form-control"
+                    bind:value={name}
                     required="true"
                     placeholder="Your awesome name" />
                 </div>
@@ -108,6 +145,7 @@
                     required="true"
                     id="xs-donate-email"
                     class="form-control"
+                    bind:value={email}
                     placeholder="email@awesome.com" />
                 </div>
                 <div class="xs-input-group" id="xs-input-checkbox">
@@ -115,6 +153,7 @@
                     type="checkbox"
                     name="agree"
                     id="xs-donate-agree"
+                    bind:checked={agree}
                     />
                   <label for="xs-donate-agree">
                     I Agree
@@ -122,7 +161,7 @@
                   </label>
                 </div>
                 <!-- .xs-input-group END -->
-                <button type="submit"  class="btn btn-warning">
+                <button type="submit" disabled={!agree} class="btn btn-warning">
                   <span class="badge">
                     <i class="fa fa-heart" />
                   </span>
@@ -139,5 +178,5 @@
       </section>
       <!-- End donation form section -->
     </main>
-	{/if}
+	{/await}
 	<Footer />
