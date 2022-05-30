@@ -4,6 +4,7 @@
 	import About from "./pages/About.svelte";
 	import Contact from "./pages/Contact.svelte";
 	import Donation from "./pages/Donation.svelte";
+	import Failure from "./pages/Failure.svelte";
 	import NotFound from "./pages/NotFound.svelte";
 	import Success from "./pages/Success.svelte"
 
@@ -16,6 +17,7 @@
 		next();
 	}, () => (page = Donation));
 	router('/success', () => (page = Success));
+	router('/error', () => (page = Failure));
 	router('*', () => (page = NotFound));
 	router.start();
 
