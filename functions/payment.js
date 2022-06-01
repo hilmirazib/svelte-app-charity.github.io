@@ -29,8 +29,8 @@ exports.handler = function(event, context, callback) {
             gross_amount: parseInt(amount),
         },
         customer_details: {
-            first_name,
-            last_name,
+            firstName,
+            lastName,
             email,
         },
         creadit_card: {
