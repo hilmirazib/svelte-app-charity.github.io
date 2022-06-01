@@ -40,14 +40,14 @@ exports.handler = function(event, context, callback) {
     snap
         .createTransaction(params)
         .then(function(transaction) {
-            const { token, url_redirect } = transaction;
+            const { token, redirect_url } = transaction;
             console.log(`Token: ${token}`);
-            console.log(`Redirect URL: ${url_redirect}`);
+            console.log(`Redirect URL: ${redirect_url}`);
             callback(null, {
                 statusCode: 200,
                 headers: header,
                 body: JSON.stringify({
-                    url: url_redirect,
+                    url: redirect_url,
                     params,
                 }),
             });
