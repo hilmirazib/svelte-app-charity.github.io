@@ -37,7 +37,8 @@ exports.handler = function(event, context, callback) {
             secure: true,
         },
     };
-    Snap.createTransaction(params)
+    snap
+        .createTransaction(params)
         .then(function(transaction) {
             const { token, url_redirect } = transaction;
             console.log(`Token: ${token}`);
